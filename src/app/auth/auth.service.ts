@@ -40,6 +40,9 @@ export class AuthService {
     const role: Role[] = JSON.parse(localStorage.getItem(ROLE_KEY)!);
     return role;
   }
+  name(){
+    return localStorage.getItem(USER_NAME_KEY)!;
+  }
   private redirectToDashboard(): void {
     this.router.navigateByUrl('/dashboard');
   }
@@ -58,7 +61,7 @@ export class AuthService {
       localStorage.setItem(ROLE_KEY, JSON.stringify(user.role));
       const expires_in = user.exp - 30;
       localStorage.setItem(EXP_KEY, JSON.stringify(expires_in));
-      this.test().subscribe({next: (data=>{ console.log(data)})});
+      //this.test().subscribe({next: (data=>{ console.log(data)})});
     }
   }
 

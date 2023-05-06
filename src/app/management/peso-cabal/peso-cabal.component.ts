@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { PesoCabalService } from './peso-cabal.service';
 
 @Component({
   selector: 'app-peso-cabal',
   templateUrl: './peso-cabal.component.html',
-  styleUrls: ['./peso-cabal.component.scss']
+  styleUrls: ['./peso-cabal.component.scss'],
 })
 export class PesoCabalComponent {
-
+  res$: any;
+  private readonly pesoSvc = inject(PesoCabalService);
+  test() {
+    this.res$ = this.pesoSvc.testSvc();
+  }
 }
