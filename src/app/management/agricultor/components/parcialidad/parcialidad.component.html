@@ -1,2 +1,11 @@
 <button mat-raised-button class="mx-3">Crear Parcialidad</button>
-<button mat-raised-button>Ver Parcialidades</button>
+<ng-container *ngIf="showBtn$ | async; else Loading">
+  <button mat-raised-button (click)="verParcialidades()">Ver Parcialidades</button>
+  <div class="my-5">
+    <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData">
+    </app-mat-table>
+  </div>
+</ng-container>
+<ng-template #Loading>
+  <span>NO TIENE PARCIALIDADES REGISTRADAS</span>
+</ng-template>

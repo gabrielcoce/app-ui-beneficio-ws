@@ -4,10 +4,10 @@ export interface ICrearSolicitud {
   pesoTotal: number;
   cantidadParcialidades: number;
 }
-export interface ICrearCuenta {
-  noSolicitud: string;
-  user: string;
-}
+// export interface ICrearCuenta {
+//   noSolicitud: string;
+//   user: string;
+// }
 
 export interface ICrearParcialidad {
   noCuenta: string;
@@ -43,4 +43,35 @@ export interface ISuccessResponse {
   data: any;
   message: string;
   status: string;
+}
+
+export interface ICuentas {
+  noCuenta: string;
+  estado: string;
+  peso: number;
+  parcialidades: number;
+  createdAt: string;
+}
+export interface ITableCuentas {
+  noCuenta: string;
+  estado: string;
+  peso: string;
+  parcialidades: string;
+  createdAt: string;
+}
+
+export interface IParcialidades {
+  noCuenta: string;
+  licenciaPiloto: string;
+  placaTransporte: string;
+  pesoIngresado: number;
+  parcialidadId: string;
+}
+
+export interface ITableParcialidades {
+  noCuenta: string;
+  licenciaPiloto: string;
+  placaTransporte: string;
+  pesoIngresado: string;
+  parcialidadId: string;
 }

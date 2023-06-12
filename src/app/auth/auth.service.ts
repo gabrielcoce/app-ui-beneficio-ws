@@ -80,6 +80,7 @@ export class AuthService {
     localStorage.removeItem(USER_NAME_KEY);
     localStorage.removeItem(ROLE_KEY);
     localStorage.removeItem(EXP_KEY);
+    window.location.reload();
   }
 
   private isTokenExpire() {

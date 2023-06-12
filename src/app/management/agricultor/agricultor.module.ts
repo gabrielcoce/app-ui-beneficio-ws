@@ -9,7 +9,7 @@ import { AgricultorRoutingModule } from './agricultor-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableComponent } from '../mat-table/mat-table.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { CrearCuentaComponent } from './components/modals/crear-cuenta/crear-cuenta.component';
+import { CrearCuentaComponent } from '../beneficio/components/modals/crear-cuenta/crear-cuenta.component';
 import { CrearSolicitudComponent } from './components/modals/crear-solicitud/crear-solicitud.component';
 import { CrearParcialidadComponent } from './components/modals/crear-parcialidad/crear-parcialidad.component';
 
