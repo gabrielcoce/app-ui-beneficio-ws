@@ -8,6 +8,7 @@ import { BeneficioService } from './beneficio.service';
 })
 export class BeneficioComponent {
   res$: any;
+  opened: boolean = true;
   private readonly beneficioSvc = inject(BeneficioService);
   test() {
     this.res$ = this.beneficioSvc.testSvc();

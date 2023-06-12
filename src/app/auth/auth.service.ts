@@ -9,11 +9,12 @@ import jwt_decode from 'jwt-decode';
 import { Role } from './model/roles.type';
 
 const TOKEN_KEY = 'access_token';
+const TOKEN_KEY_HC = 'access_token_hc';
 const USER_NAME_KEY = 'user_name';
-const USER_ID_KEY = 'user_id';
 const ROLE_KEY = 'role';
 const EXP_KEY = 'expires_in';
-const URL_AUTH = environment.BASE_API + '/auth';
+const EXP_KEY_HC = 'expires_in_hc';
+const URL_AUTH = environment.BASE_API + '/beneficio/auth';
 const URL_TEST = environment.BASE_API + '/test';
 @Injectable({
   providedIn: 'root',
@@ -40,7 +41,7 @@ export class AuthService {
     const role: Role[] = JSON.parse(localStorage.getItem(ROLE_KEY)!);
     return role;
   }
-  name(){
+  name() {
     return localStorage.getItem(USER_NAME_KEY)!;
   }
   private redirectToDashboard(): void {
@@ -56,7 +57,6 @@ export class AuthService {
     if (token) {
       const user = this.decodeToken(token);
       localStorage.setItem(TOKEN_KEY, user.token);
-      localStorage.setItem(USER_ID_KEY, user.userid);
       localStorage.setItem(USER_NAME_KEY, user.username);
       localStorage.setItem(ROLE_KEY, JSON.stringify(user.role));
       const expires_in = user.exp - 30;
@@ -65,9 +65,18 @@ export class AuthService {
     }
   }
 
+  private saveTokenToLocalStoreHc(token: string): void {
+    if (token) {
+      const user = this.decodeToken(token);
+      localStorage.setItem(TOKEN_KEY_HC, user.token);
+      const expires_in = user.exp - 30;
+      localStorage.setItem(EXP_KEY_HC, JSON.stringify(expires_in));
+      //this.test().subscribe({next: (data=>{ console.log(data)})});
+    }
+  }
+
   private removeUserFromLocalStorage(): void {
     localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_ID_KEY);
     localStorage.removeItem(USER_NAME_KEY);
     localStorage.removeItem(ROLE_KEY);
     localStorage.removeItem(EXP_KEY);
@@ -81,7 +90,17 @@ export class AuthService {
     ); // o token vencido
   }
 
+  private isTokenExpireHc() {
+    const expires_in = localStorage.getItem(EXP_KEY_HC);
+    return (
+      expires_in === null || // no existe variable
+      parseInt(expires_in) <= new Date().getTime()
+    ); // o token vencido
+  }
+
   test() {
-    return this.httpClient.get(URL_TEST + '/all', { responseType: 'text' || 'json' });
+    return this.httpClient.get(URL_TEST + '/all', {
+      responseType: 'text' || 'json',
+    });
   }
 }

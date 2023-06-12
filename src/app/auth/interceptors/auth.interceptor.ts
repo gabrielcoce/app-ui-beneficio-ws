@@ -5,6 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor,
   HTTP_INTERCEPTORS,
+  HttpHeaders,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
@@ -29,14 +30,17 @@ export class AuthInterceptor implements HttpInterceptor {
   private addAccessToken(request: HttpRequest<unknown>): HttpRequest<unknown> {
     const accessToken = localStorage.getItem(TOKEN_KEY);
     //console.info('add token from localStorage -->', accessToken);
+    //console.log('method', request.method);
     const newRequest = request;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+      // 'Access-Control-Allow-Origin': '*',
+      // 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+      // 'Access-Control-Allow-Headers': 'Content-Type',
+      Accept: 'application/json',
+    });
     if (accessToken) {
-      return newRequest.clone({
-        setHeaders: {
-          Authorization: `Bearer ${accessToken}`,
-          Accept: 'application/json',
-        },
-      });
+      return newRequest.clone({ headers });
     }
     return newRequest;
   }

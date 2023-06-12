@@ -1,0 +1,17 @@
+<!--* TABLA GENERICA -->
+<mat-card-content class="mat-elevation-z2">
+  <table mat-table [dataSource]="tableDataSrc" matSort matSortDisabled class="table-auto">
+    <ng-container *ngFor="let col of tableCols; index as i" matColumnDef="{{ col }}">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ headerText[i] |
+        uppercase }}
+      </th>
+      <td mat-cell *matCellDef="let profile">{{ profile[col] | uppercase }}
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
+  </table>
+  <!--* PAGINACION -->
+  <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons>
+  </mat-paginator>
+</mat-card-content>

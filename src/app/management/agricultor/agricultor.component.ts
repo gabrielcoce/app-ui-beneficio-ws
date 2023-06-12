@@ -8,6 +8,7 @@ import { AgricultorService } from './agricultor.service';
 })
 export class AgricultorComponent {
   res$: any;
+  opened: boolean = true;
   private readonly agricultorSvc = inject(AgricultorService);
   test() {
     this.res$ = this.agricultorSvc.testSvc();

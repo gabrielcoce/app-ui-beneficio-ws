@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { IsLoggedInGuard } from './auth/guards/auth.guard';
+import { HcaptchaComponent } from './auth/hcaptcha/hcaptcha.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'verificar-qr',
+    component: HcaptchaComponent,
   },
   {
     path: '',

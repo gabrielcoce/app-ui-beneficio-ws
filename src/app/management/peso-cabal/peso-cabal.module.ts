@@ -1,17 +1,21 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PesoCabalComponent } from './peso-cabal.component';
-import { RouterModule, Routes } from '@angular/router';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: PesoCabalComponent,
-  },
-];
+import { PesoCabalRoutingModule } from './peso-cabal-routing.module';
+import { ParcialidadPcComponent } from './components/parcialidad-pc/parcialidad-pc.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from 'src/app/material.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
-  declarations: [PesoCabalComponent],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  declarations: [PesoCabalComponent, ParcialidadPcComponent],
+  imports: [
+    CommonModule,
+    PesoCabalRoutingModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    NgxSpinnerModule,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PesoCabalModule {}

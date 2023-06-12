@@ -10,6 +10,7 @@ import { LoginCredentials } from '../model/login.credentials.interface';
 import { EMPTY, catchError, finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -25,11 +26,18 @@ export class LoginComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     public authService: AuthService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) {
     this.buildForm();
   }
   ngOnInit(): void {
+    /** spinner starts on init */
+    this.spinner.show();
+    setTimeout(() => {
+      /** spinner ends after 5 seconds */
+      this.spinner.hide();
+    }, 1000);
   }
 
   private buildForm() {

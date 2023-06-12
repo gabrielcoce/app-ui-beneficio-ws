@@ -8,6 +8,7 @@ import { PesoCabalService } from './peso-cabal.service';
 })
 export class PesoCabalComponent {
   res$: any;
+  opened: boolean = true;
   private readonly pesoSvc = inject(PesoCabalService);
   test() {
     this.res$ = this.pesoSvc.testSvc();
