@@ -1,8 +1,10 @@
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -13,6 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { QrGenericComponent } from '../qr-generic/qr-generic.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/material.module';
+import { RegistrarParcialidadComponent } from '../peso-cabal/components/registrar-parcialidad/registrar-parcialidad.component';
 
 @Component({
   selector: 'app-mat-table',
@@ -28,6 +31,7 @@ export class MatTableComponent implements OnChanges {
   @Input('tableColumns') tableCols!: string[];
   @Input() headerText!: string[];
   @Input() tableData: {}[] = [];
+  @Output() dataTable = new EventEmitter<any>();
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
@@ -51,5 +55,28 @@ export class MatTableComponent implements OnChanges {
       disableClose: false,
       data: noCuenta,
     });
+  }
+
+  registrarParcialidad(noCuenta: string, parcialidadId: any) {
+    console.log('noCuenta', noCuenta);
+    console.log('parcialidadId', parcialidadId);
+    this.dialog
+      .open(RegistrarParcialidadComponent, {
+        width: '600px',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          noCuenta,
+          parcialidadId,
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          if (result === 'success') {
+            this.dataTable.emit(result);
+          }
+        }
+      });
   }
 }

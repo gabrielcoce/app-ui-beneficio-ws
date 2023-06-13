@@ -85,7 +85,7 @@ export class CrearParcialidadComponent implements OnInit {
   }
   async enviar() {
     if (this.form.invalid) return;
-    const noCuenta = this.form.get('noCuenta')?.value;
+    const noCuenta = this.transformUpper(this.form.get('noCuenta')?.value);
     const pesoIngresado = this.form.get('pesoIngresado')?.value;
     const licenciaPiloto = this.form.get('licenciaPiloto')?.value;
     const placaTransporte = this.form.get('placaTransporte')?.value;
@@ -119,6 +119,12 @@ export class CrearParcialidadComponent implements OnInit {
     const transporte$ = this.agricultorSvc.getTransporteSvc();
     return await firstValueFrom(transporte$).then((res) => res);
   }
+
+  private transformUpper(str: string) {
+    if (!str) return str;
+    return str.toUpperCase();
+  }
+
   private async showMessage(icon: SweetAlertIcon, text: string) {
     const Toast = Swal.mixin({
       //toast: true,

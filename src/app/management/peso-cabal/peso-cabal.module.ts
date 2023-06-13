@@ -7,9 +7,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatTableComponent } from '../mat-table/mat-table.component';
+import { RegistrarParcialidadComponent } from './components/registrar-parcialidad/registrar-parcialidad.component';
 
 @NgModule({
-  declarations: [PesoCabalComponent, ParcialidadPcComponent],
+  declarations: [PesoCabalComponent, ParcialidadPcComponent, RegistrarParcialidadComponent],
   imports: [
     CommonModule,
     PesoCabalRoutingModule,

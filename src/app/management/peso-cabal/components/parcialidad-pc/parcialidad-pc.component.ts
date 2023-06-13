@@ -1,5 +1,9 @@
 import { firstValueFrom } from 'rxjs';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PesoCabalService } from '../../peso-cabal.service';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
@@ -8,26 +12,39 @@ import {
   ITableParcialidadesPc,
 } from 'src/app/management/interfaces/peso-cabal.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { RegistrarParcialidadComponent } from '../registrar-parcialidad/registrar-parcialidad.component';
 
 @Component({
   selector: 'app-parcialidad-pc',
   templateUrl: './parcialidad-pc.component.html',
   styleUrls: ['./parcialidad-pc.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ParcialidadPcComponent {
   form!: FormGroup;
   tableData!: {}[];
-  hText: string[] = ['No. Parcialidad', 'Peso Ingresado'];
+  hText: string[] = [
+    'No. Parcialidad',
+    'Peso Ingresado',
+    'Registrar Parcialidad',
+    'Actualizar Parcialidad',
+    'Verificar Parcialidad',
+  ];
   tableCols: string[] = [
     'parcialidadId',
     'pesoIngresado',
-    'parcialidadVerificada',
+    'actionRegister',
+    'actionUpdate',
+    'actionVerificar',
   ];
+  noCuenta: string = '';
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly pesoCabalSvc: PesoCabalService,
     private spinner: NgxSpinnerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog
   ) {
     this.buildForm();
   }
@@ -46,7 +63,6 @@ export class ParcialidadPcComponent {
       ],
     });
   }
-  registrarParcialidad() {}
   async buscar() {
     if (this.form.invalid) return;
     this.spinner.show();
@@ -59,7 +75,8 @@ export class ParcialidadPcComponent {
           await this.showMessage('info', consulta);
           return;
         }
-        this.tableData = this.llenarJsonTabla(consulta);
+        this.noCuenta = noCuenta;
+        this.tableData = await this.llenarJsonTabla(consulta);
         this.spinner.hide();
         this.cdr.detectChanges();
       })
@@ -68,17 +85,35 @@ export class ParcialidadPcComponent {
         this.spinner.hide();
       });
   }
-  private llenarJsonTabla(data: IParcialidadesPc[]) {
-    let json: ITableParcialidadesPc[] = [];
-    data.forEach((element) => {
+  private async llenarJsonTabla(data: IParcialidadesPc[]) {
+    const promises = data.map(async (element) => {
       const { parcialidadId, pesoIngresado, parcialidadVerificada } = element;
-      json.push({
+      const parcialidadRegistrada = await this.verificarParcialidad(
+        parcialidadId
+      );
+      return {
         parcialidadId,
         pesoIngresado: this.numberToString(pesoIngresado),
+        actionRegister: '',
+        actionUpdate: '',
+        actionVerificar: '',
         parcialidadVerificada,
-      });
+        parcialidadRegistrada,
+        noCuenta: this.noCuenta,
+      };
     });
+    const json: ITableParcialidadesPc[] = await Promise.all(promises);
     return json;
+  }
+  private async verificarParcialidad(parcialidad: any) {
+    const verificar$ = this.pesoCabalSvc.verificaExistenciaSvc(parcialidad);
+    return await firstValueFrom(verificar$).then((res) => res);
+  }
+  obtenerDataTabla(data: string) {
+    //console.log('data -->', data);
+    if (data === 'success') {
+      this.buscar();
+    }
   }
   private numberToString(num: number) {
     if (!num) return '';

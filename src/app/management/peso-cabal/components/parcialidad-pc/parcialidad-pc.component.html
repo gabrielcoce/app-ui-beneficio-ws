@@ -1,5 +1,5 @@
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
-<button mat-raised-button class="mx-3" (click)="registrarParcialidad()">Registrar Parcialidad</button>
+<!-- <button mat-raised-button class="mx-3" (click)="registrarParcialidad()" [disabled]="!noCuenta">Registrar Parcialidad</button> -->
 <section class="mx-3 my-3">
   <form [formGroup]="form" class="space-y-4 md:space-y-6">
     <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">No. Cuenta</mat-label>
@@ -10,6 +10,6 @@
   </form>
 </section>
 <div class="my-5">
-  <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData">
+  <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData" (dataTable)="obtenerDataTabla($event)">
   </app-mat-table>
 </div>

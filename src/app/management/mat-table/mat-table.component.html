@@ -1,20 +1,31 @@
 <!--* TABLA GENERICA -->
 <mat-card-content class="mat-elevation-z2">
-  <table mat-table [dataSource]="tableDataSrc" matSort matSortDisabled
-    class="table-auto">
-    <ng-container *ngFor="let col of tableCols; index as i"
-      matColumnDef="{{ col }}">
+  <table mat-table [dataSource]="tableDataSrc" matSort matSortDisabled class="table-auto">
+    <ng-container *ngFor="let col of tableCols; index as i" matColumnDef="{{ col }}">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ headerText[i] |
         uppercase }}
       </th>
       <td mat-cell *matCellDef="let profile">{{ profile[col] | uppercase }}
-
-        <div *ngIf="col === 'licenciaPiloto'">
+        <ng-container *ngIf="col === 'licenciaPiloto'">
           <a class="mouse text-blue-500 hover:text-blue-700"
             (click)="obtenerGestion(profile['object'])">{{profile['qrlicencia']
             | uppercase}}</a>
-        </div>
-
+        </ng-container>
+        <ng-container *ngIf="col === 'actionRegister'">
+          <ng-container *ngIf="!profile['parcialidadRegistrada']">
+            <button mat-button (click)="registrarParcialidad(profile['noCuenta'], profile['parcialidadId'])">Registrar Parcialidad</button>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="col === 'actionUpdate'">
+          <ng-container *ngIf="profile['parcialidadRegistrada'] && !profile['parcialidadVerificada']">
+            <p>Actualizar</p>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="col === 'actionVerificar'">
+          <ng-container *ngIf="profile['parcialidadRegistrada'] && !profile['parcialidadVerificada']">
+            <p>Verificar</p>
+          </ng-container>
+        </ng-container>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true"></tr>
