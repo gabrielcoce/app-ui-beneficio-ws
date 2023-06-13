@@ -75,3 +75,12 @@ export interface ITableParcialidades {
   pesoIngresado: string;
   parcialidadId: string;
 }
+
+export interface IPiloto {
+  nombre: string;
+  licenciaPiloto: string;
+}
+
+export interface ITransporte {
+  placaTransporte: string;
+}

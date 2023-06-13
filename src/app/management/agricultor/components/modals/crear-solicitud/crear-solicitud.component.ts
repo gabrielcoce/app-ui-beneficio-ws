@@ -9,13 +9,14 @@ import { firstValueFrom } from 'rxjs';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { AgricultorService } from '../../../agricultor.service';
 const USER_NAME_KEY = 'user_name';
+const userName = localStorage.getItem(USER_NAME_KEY)!;
 @Component({
   selector: 'app-crear-solicitud',
   templateUrl: './crear-solicitud.component.html',
   styleUrls: ['./crear-solicitud.component.scss'],
 })
 export class CrearSolicitudComponent {
-  userName: string = localStorage.getItem(USER_NAME_KEY)!;
+  // userName: string = localStorage.getItem(USER_NAME_KEY)!;
   form!: FormGroup;
   // tipoSolicitud: ITipoSolicitud[] = [
   //   { id: 10, nombre: 'CREAR CUENTA' },
@@ -51,7 +52,7 @@ export class CrearSolicitudComponent {
     const cantidadParcialidades = this.form.get('cantidadParcialidades')?.value;
     const data: ICrearSolicitud = {
       tipoSolicitud,
-      usuarioSolicita: this.userName,
+      usuarioSolicita: userName,
       pesoTotal,
       cantidadParcialidades,
     };

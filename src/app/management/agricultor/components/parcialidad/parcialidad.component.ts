@@ -7,6 +7,8 @@ import {
   IParcialidades,
   ITableParcialidades,
 } from 'src/app/management/interfaces/agricultor.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { CrearParcialidadComponent } from '../modals/crear-parcialidad/crear-parcialidad.component';
 const USER_NAME_KEY = 'user_name';
 const userName = localStorage.getItem(USER_NAME_KEY)!;
 
@@ -35,9 +37,17 @@ export class ParcialidadComponent {
   constructor(
     private agricultorSvc: AgricultorService,
     private spinner: NgxSpinnerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog
   ) {
     this.showBtn$ = this.agricultorSvc.verificarParcialidadesSvc(userName);
+  }
+  crearParcialidad() {
+    this.dialog.open(CrearParcialidadComponent, {
+      width: '600px',
+      height: 'auto',
+      disableClose: true,
+    });
   }
 
   async verParcialidades() {
@@ -63,8 +73,13 @@ export class ParcialidadComponent {
   private llenarJsonTabla(data: IParcialidades[]) {
     let json: ITableParcialidades[] = [];
     data.forEach((element) => {
-      const { noCuenta, licenciaPiloto, placaTransporte, pesoIngresado, parcialidadId } =
-        element;
+      const {
+        noCuenta,
+        licenciaPiloto,
+        placaTransporte,
+        pesoIngresado,
+        parcialidadId,
+      } = element;
       json.push({
         noCuenta,
         parcialidadId,

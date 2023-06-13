@@ -1,1 +1,37 @@
-<p>crear-parcialidad works!</p>
+<mat-dialog-content>
+  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Crear Parcialidad
+  </h1>
+  <form [formGroup]="form" class="space-y-4 md:space-y-6">
+    <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">No. Cuenta</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <input matInput type="text" class="outline-0 focus:ring-0 text-center font-black" formControlName="noCuenta">
+    </mat-form-field>
+    <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Peso Ingresado (Toneladas)</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <input matInput type="text" class="outline-0 focus:ring-0" formControlName="pesoIngresado">
+    </mat-form-field>
+    <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Licencia Piloto</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-select formControlName="licenciaPiloto" >
+        <mat-option *ngFor="let piloto of pilotos" [value]="piloto.licenciaPiloto">
+          {{piloto.nombre | uppercase}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Placa Transporte</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-select formControlName="placaTransporte">
+        <mat-option *ngFor="let transporte of transportes" [value]="transporte.placaTransporte">
+          {{transporte.placaTransporte | uppercase}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container text-center">
+    <button mat-raised-button (click)="cerrar()"><mat-icon>close</mat-icon>Cerrar</button>
+    <button class="mx-3" mat-raised-button (click)="enviar()"
+      [disabled]="form.invalid"><mat-icon>done</mat-icon>Enviar</button>
+  </div>
+</mat-dialog-actions>

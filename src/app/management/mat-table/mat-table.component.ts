@@ -5,9 +5,11 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { QrGenericComponent } from '../qr-generic/qr-generic.component';
 
 @Component({
   selector: 'app-mat-table',
@@ -15,6 +17,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./mat-table.component.scss'],
 })
 export class MatTableComponent implements OnChanges {
+  constructor(private dialog: MatDialog) {}
   tableDataSrc: any;
   @Input('tableColumns') tableCols!: string[];
   @Input() headerText!: string[];
@@ -32,5 +35,13 @@ export class MatTableComponent implements OnChanges {
       this.tableDataSrc.paginator = this.paginator;
       //console.log('tableData', changes['tableData'].currentValue);
     }
+  }
+
+  openDialog(){
+    this.dialog.open(QrGenericComponent, {
+      width: 'auto',
+      height: 'auto',
+      disableClose: false
+    });
   }
 }
