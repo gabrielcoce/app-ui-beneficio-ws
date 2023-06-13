@@ -83,9 +83,11 @@ export class ParcialidadComponent {
       json.push({
         noCuenta,
         parcialidadId,
-        licenciaPiloto,
+        licenciaPiloto: '',
         placaTransporte,
         pesoIngresado: this.numberToString(pesoIngresado),
+        qrlicencia: licenciaPiloto,
+        object: element
       });
     });
     return json;

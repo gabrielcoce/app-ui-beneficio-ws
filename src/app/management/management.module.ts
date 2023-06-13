@@ -8,7 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { MaterialModule } from '../material.module';
 import { MatTableComponent } from './mat-table/mat-table.component';
 import { QrGenericComponent } from './qr-generic/qr-generic.component';
-
+import { QRCodeModule } from 'angularx-qrcode';
 @NgModule({
   declarations: [
     LayoutComponent,
@@ -22,6 +22,7 @@ import { QrGenericComponent } from './qr-generic/qr-generic.component';
     ManagementRoutingModule,
     MaterialModule,
     NgOptimizedImage,
+    QRCodeModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

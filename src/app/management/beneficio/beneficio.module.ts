@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+
 @NgModule({
   declarations: [BeneficioComponent, CuentaBcComponent, SolicitudBcComponent],
   imports: [

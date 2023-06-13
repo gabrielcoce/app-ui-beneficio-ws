@@ -74,6 +74,9 @@ export interface ITableParcialidades {
   placaTransporte: string;
   pesoIngresado: string;
   parcialidadId: string;
+  qrlicencia: string;
+  object: any;
+
 }
 
 export interface IPiloto {

@@ -17,7 +17,7 @@ import { QrGenericComponent } from '../qr-generic/qr-generic.component';
   styleUrls: ['./mat-table.component.scss'],
 })
 export class MatTableComponent implements OnChanges {
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
   tableDataSrc: any;
   @Input('tableColumns') tableCols!: string[];
   @Input() headerText!: string[];
@@ -37,11 +37,13 @@ export class MatTableComponent implements OnChanges {
     }
   }
 
-  openDialog(){
+  obtenerGestion(noCuenta:string) {
+    console.log("DATA:", noCuenta)
     this.dialog.open(QrGenericComponent, {
       width: 'auto',
       height: 'auto',
-      disableClose: false
+      disableClose: false,
+      data: noCuenta
     });
   }
 }
