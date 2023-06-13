@@ -7,9 +7,10 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgHcaptchaModule } from 'ng-hcaptcha';
 import { environment } from 'src/environments/environment';
 import { HcaptchaComponent } from './hcaptcha/hcaptcha.component';
+import { ApproveEntryComponent } from './approve-entry/approve-entry.component';
 
 @NgModule({
-  declarations: [LoginComponent, HcaptchaComponent],
+  declarations: [LoginComponent, HcaptchaComponent, ApproveEntryComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

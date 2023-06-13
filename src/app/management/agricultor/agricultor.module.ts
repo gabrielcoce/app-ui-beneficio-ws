@@ -23,7 +23,6 @@ import { CrearParcialidadComponent } from './components/modals/crear-parcialidad
     CrearCuentaComponent,
     CrearSolicitudComponent,
     CrearParcialidadComponent,
-    //MatTableComponent,
   ],
   imports: [
     CommonModule,
@@ -31,6 +30,7 @@ import { CrearParcialidadComponent } from './components/modals/crear-parcialidad
     ReactiveFormsModule,
     MaterialModule,
     NgxSpinnerModule,
+    MatTableComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

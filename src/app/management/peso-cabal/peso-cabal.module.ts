@@ -16,6 +16,7 @@ import { MatTableComponent } from '../mat-table/mat-table.component';
     ReactiveFormsModule,
     MaterialModule,
     NgxSpinnerModule,
+    MatTableComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

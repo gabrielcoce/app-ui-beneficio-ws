@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { IsLoggedInGuard } from './auth/guards/auth.guard';
 import { HcaptchaComponent } from './auth/hcaptcha/hcaptcha.component';
+import { ApproveEntryComponent } from './auth/approve-entry/approve-entry.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: 'verificar-qr',
     component: HcaptchaComponent,
+  },
+  {
+    path:'permitir-ingreso',
+    component: ApproveEntryComponent,
+    canMatch: [IsLoggedInGuard],
   },
   {
     path: '',
