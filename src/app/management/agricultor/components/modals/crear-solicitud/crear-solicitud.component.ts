@@ -16,17 +16,7 @@ const userName = localStorage.getItem(USER_NAME_KEY)!;
   styleUrls: ['./crear-solicitud.component.scss'],
 })
 export class CrearSolicitudComponent {
-  // userName: string = localStorage.getItem(USER_NAME_KEY)!;
   form!: FormGroup;
-  // tipoSolicitud: ITipoSolicitud[] = [
-  //   { id: 10, nombre: 'CREAR CUENTA' },
-  //   { id: 11, nombre: 'CREAR PILOTO' },
-  //   { id: 12, nombre: 'CREAR TRANSPORTE' },
-  //   { id: 13, nombre: 'ACTIVAR PILOTO' },
-  //   { id: 14, nombre: 'INACTIVAR PILOTO' },
-  //   { id: 15, nombre: 'ACTIVAR TRANSPORTE' },
-  //   { id: 16, nombre: 'INACTIVAR TRANSPORTE' },
-  // ];
   constructor(
     private readonly formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CrearSolicitudComponent>,
@@ -40,8 +30,14 @@ export class CrearSolicitudComponent {
   private buildForm() {
     this.form = this.formBuilder.group({
       tipoSolicitud: [{ value: 'CREAR CUENTA', disabled: true }],
-      pesoTotal: ['', { validators: [Validators.required] }],
-      cantidadParcialidades: ['', { validators: [Validators.required] }],
+      pesoTotal: [
+        '',
+        { validators: [Validators.minLength(1), Validators.required] },
+      ],
+      cantidadParcialidades: [
+        '',
+        { validators: [Validators.minLength(1), Validators.required] },
+      ],
     });
   }
 

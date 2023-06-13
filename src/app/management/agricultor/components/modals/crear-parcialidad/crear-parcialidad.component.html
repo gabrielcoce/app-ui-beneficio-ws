@@ -3,14 +3,14 @@
   </h1>
   <form [formGroup]="form" class="space-y-4 md:space-y-6">
     <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">No. Cuenta</mat-label>
-    <mat-form-field appearance="outline" class="w-full">
-      <input matInput type="text" class="outline-0 focus:ring-0 text-center font-black" formControlName="noCuenta">
+    <mat-form-field appearance="outline" class="w-full uppercase">
+      <input matInput type="text" class="outline-0 focus:ring-0 text-center" maxlength="25" formControlName="noCuenta">
     </mat-form-field>
     <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Peso Ingresado (Toneladas)</mat-label>
     <mat-form-field appearance="outline" class="w-full">
       <input matInput type="text" class="outline-0 focus:ring-0" formControlName="pesoIngresado">
     </mat-form-field>
-    <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Licencia Piloto</mat-label>
+    <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Nombre Piloto</mat-label>
     <mat-form-field appearance="outline" class="w-full">
       <mat-select formControlName="licenciaPiloto" >
         <mat-option *ngFor="let piloto of pilotos" [value]="piloto.licenciaPiloto">

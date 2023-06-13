@@ -44,10 +44,40 @@ export class CrearParcialidadComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      noCuenta: ['', { validators: [Validators.required] }],
-      pesoIngresado: ['', { validators: [Validators.required] }],
-      licenciaPiloto: ['', { validators: [Validators.required] }],
-      placaTransporte: ['', { validators: [Validators.required] }],
+      noCuenta: [
+        '',
+        {
+          validators: [
+            Validators.minLength(20),
+            Validators.maxLength(25),
+            Validators.required,
+          ],
+        },
+      ],
+      pesoIngresado: [
+        '',
+        { validators: [Validators.minLength(1), Validators.required] },
+      ],
+      licenciaPiloto: [
+        '',
+        {
+          validators: [
+            Validators.minLength(13),
+            Validators.maxLength(13),
+            Validators.required,
+          ],
+        },
+      ],
+      placaTransporte: [
+        '',
+        {
+          validators: [
+            Validators.minLength(7),
+            Validators.maxLength(7),
+            Validators.required,
+          ],
+        },
+      ],
     });
   }
   cerrar() {

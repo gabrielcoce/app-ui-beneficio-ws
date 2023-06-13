@@ -1,11 +1,11 @@
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
 <ng-container *ngIf="showBtn$ | async; else Loading">
-  <button mat-raised-button class="mx-3" (click)="verCuentas()" >Ver Cuentas</button>
+  <button mat-raised-button (click)="verCuentas()" >Ver Cuentas</button>
   <div class="my-5">
     <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData">
     </app-mat-table>
   </div>
 </ng-container>
 <ng-template #Loading>
-  <span>NO TIENE CUENTAS REGISTRADAS</span>
+  <span class="mx-3">NO TIENE CUENTAS REGISTRADAS</span>
 </ng-template>

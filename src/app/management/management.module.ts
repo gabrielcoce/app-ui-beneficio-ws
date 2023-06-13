@@ -15,6 +15,7 @@ import { QrGenericComponent } from './qr-generic/qr-generic.component';
     DashboardComponent,
     HeaderComponent,
     QrGenericComponent,
+    MatTableComponent,
   ],
   imports: [
     CommonModule,

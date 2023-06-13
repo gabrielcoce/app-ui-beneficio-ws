@@ -23,7 +23,7 @@ import { CrearParcialidadComponent } from './components/modals/crear-parcialidad
     CrearCuentaComponent,
     CrearSolicitudComponent,
     CrearParcialidadComponent,
-    MatTableComponent,
+    //MatTableComponent,
   ],
   imports: [
     CommonModule,

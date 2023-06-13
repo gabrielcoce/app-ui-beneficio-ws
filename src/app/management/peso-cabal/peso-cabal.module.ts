@@ -6,6 +6,7 @@ import { ParcialidadPcComponent } from './components/parcialidad-pc/parcialidad-
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatTableComponent } from '../mat-table/mat-table.component';
 
 @NgModule({
   declarations: [PesoCabalComponent, ParcialidadPcComponent],
