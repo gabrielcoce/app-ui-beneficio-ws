@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
@@ -22,8 +22,9 @@ import { MatTableComponent } from '../management/mat-table/mat-table.component';
       languageCode: 'es',
     }),
     MatTableComponent,
+    NgOptimizedImage,
   ],
-  exports: [LoginComponent],
+  //exports: [LoginComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AuthModule {}

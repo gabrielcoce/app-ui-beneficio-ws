@@ -7,6 +7,7 @@ import { LoginCredentials } from './model/login.credentials.interface';
 import { environment } from 'src/environments/environment';
 import jwt_decode from 'jwt-decode';
 import { Role } from './model/roles.type';
+import dayjs from 'dayjs';
 
 const TOKEN_KEY = 'access_token';
 const USER_NAME_KEY = 'user_name';
@@ -39,7 +40,9 @@ export class AuthService {
     this.router.navigateByUrl('/login');
   }
   isLoggedIn() {
-    return localStorage.getItem(TOKEN_KEY) != null && this.isTokenExpire();
+    // console.log('local', localStorage.getItem(TOKEN_KEY) !== null);
+    // console.log('token expire', this.isTokenExpire());
+    return (localStorage.getItem(TOKEN_KEY) !== null && !this.isTokenExpire());
   }
   hasRole() {
     const role: Role[] = JSON.parse(localStorage.getItem(ROLE_KEY)!);
@@ -58,17 +61,23 @@ export class AuthService {
   }
 
   private saveTokenToLocalStore(token: string): void {
+    this.removeTokenLocalStorage();
     if (token) {
       const user = this.decodeToken(token);
       localStorage.setItem(TOKEN_KEY, user.token);
       localStorage.setItem(USER_NAME_KEY, user.username);
       localStorage.setItem(ROLE_KEY, JSON.stringify(user.role));
-      const expires_in = user.exp - 30;
+      const expires_in = (user.exp - 30) * 1000;
       localStorage.setItem(EXP_KEY, JSON.stringify(expires_in));
       //this.test().subscribe({next: (data=>{ console.log(data)})});
     }
   }
-
+  private removeTokenLocalStorage(): void {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_NAME_KEY);
+    localStorage.removeItem(ROLE_KEY);
+    localStorage.removeItem(EXP_KEY);
+  }
   private removeUserFromLocalStorage(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_NAME_KEY);
@@ -79,10 +88,9 @@ export class AuthService {
 
   private isTokenExpire() {
     const expires_in = localStorage.getItem(EXP_KEY);
-    return (
-      expires_in === null || // no existe variable
-      parseInt(expires_in) <= new Date().getTime()
-    ); // o token vencido
+    return expires_in
+      ? dayjs(Date.now()).isSameOrAfter(parseInt(expires_in))
+      : false;
   }
 
   test() {

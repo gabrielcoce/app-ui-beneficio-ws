@@ -23,7 +23,7 @@ export class HcaptchaComponent {
     let accessToken: string = '';
     this.authSvc.getTokenHcaptcha(token).subscribe({
       next: (data) => {
-        console.log(data);
+        //console.log(data);
         accessToken = data;
         this.saveTokenToLocalStore(accessToken);
       },
@@ -49,15 +49,15 @@ export class HcaptchaComponent {
     return { ...userInfo, token: userToken };
   }
   private saveTokenToLocalStore(token: string): void {
-    this.removeUserFromLocalStorage();
+    this.removeTokenLocalStorage();
     if (token) {
       const user = this.decodeToken(token);
       localStorage.setItem(TOKEN_KEY, token);
-      const expires_in = user.exp - 30;
+      const expires_in = (user.exp - 30) * 1000;
       localStorage.setItem(EXP_KEY, JSON.stringify(expires_in));
     }
   }
-  private removeUserFromLocalStorage(): void {
+  private removeTokenLocalStorage(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(EXP_KEY);
   }

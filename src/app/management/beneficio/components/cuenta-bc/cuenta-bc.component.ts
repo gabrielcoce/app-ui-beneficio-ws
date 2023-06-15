@@ -41,6 +41,7 @@ export class CuentaBcComponent {
     'updatedAt',
   ];
   showTable: boolean = false;
+  noCuenta: string =  '';
   constructor(
     private spinner: NgxSpinnerService,
     private cdr: ChangeDetectorRef,
@@ -82,6 +83,7 @@ export class CuentaBcComponent {
         pesoVerificado,
         updatedAt,
       } = element;
+      this.noCuenta = noCuenta;
       json.push({
         noCuenta,
         estadoCuenta,
@@ -101,6 +103,7 @@ export class CuentaBcComponent {
         disableClose: true,
         data: {
           origen: true,
+          noCuenta: this.noCuenta,
         },
       })
       .afterClosed()
@@ -121,6 +124,7 @@ export class CuentaBcComponent {
         disableClose: true,
         data: {
           origen: false,
+          noCuenta: this.noCuenta,
         },
       })
       .afterClosed()

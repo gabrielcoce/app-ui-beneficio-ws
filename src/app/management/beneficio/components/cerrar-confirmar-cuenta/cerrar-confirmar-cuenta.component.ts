@@ -27,6 +27,8 @@ export class CerrarConfirmarCuentaComponent implements OnInit {
   ngOnInit(): void {
     this.origen = this.dialogRef.componentInstance.data.origen;
     this.title = this.origen ? 'Cerrar' : 'Confirmar';
+    const nocuenta = this.dialogRef.componentInstance.data.noCuenta;
+    this.form.get('noCuenta')?.setValue(nocuenta);
   }
   private builForm() {
     this.form = this.formBuilder.group({

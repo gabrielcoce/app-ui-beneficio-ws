@@ -15,11 +15,11 @@ export class HeaderComponent implements OnInit {
   name: string = '';
   constructor(private authService: AuthService) {}
   ngOnInit(): void {
-    this.showAgricultor = this.authService
-      .hasRole()
-      .includes('ROLE_AGRICULTOR');
-    this.showBeneficio = this.authService.hasRole().includes('ROLE_BENEFICIO');
-    this.showPesoCabal = this.authService.hasRole().includes('ROLE_PESO_CABAL');
+    this.showAgricultor = this.authService.hasRole()
+      ? this.authService.hasRole().includes('ROLE_AGRICULTOR')
+      : false;
+    this.showBeneficio = this.authService.hasRole() ? this.authService.hasRole().includes('ROLE_BENEFICIO') : false;
+    this.showPesoCabal = this.authService.hasRole() ? this.authService.hasRole().includes('ROLE_PESO_CABAL') : false;
     this.name = this.authService.name();
   }
   logout(): void {

@@ -1,3 +1,9 @@
 <mat-dialog-content>
-  <ng-hcaptcha (verify)="onVerify($event)" (expired)="onExpired($event)" (error)="onError($event)"></ng-hcaptcha>
+  <img class="object-fill h-48 w-96" src="./assets/img/06-beneficio.jpg" alt="">
+  <div class="flex justify-center my-5">
+    <ng-hcaptcha (verify)="onVerify($event)" (expired)="onExpired($event)" (error)="onError($event)"></ng-hcaptcha>
+  </div>
+  <div class="flex justify-center my-3">
+    <span class="font-bold">Gracias por utilizar nuestros servicios</span>
+  </div>
 </mat-dialog-content>

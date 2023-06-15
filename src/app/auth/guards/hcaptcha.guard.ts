@@ -9,7 +9,7 @@ const EXP_KEY = 'expires_in_hc';
 export const HcaptchaGuard: CanMatchFn = () => {
   const dialog = inject(MatDialog);
   window.scrollTo(0, 0);
-  if (!localStorage.getItem(TOKEN_KEY) || isTokenExpire()) {
+  if (localStorage.getItem(TOKEN_KEY) === null || isTokenExpire()) {
     return dialog
       .open(HcaptchaComponent)
       .beforeClosed()
@@ -21,6 +21,6 @@ export const HcaptchaGuard: CanMatchFn = () => {
 const isTokenExpire = () => {
   const expires_in = localStorage.getItem(EXP_KEY);
   return expires_in
-    ? dayjs(parseInt(expires_in)).isSameOrAfter(Date.now())
+    ? dayjs(Date.now()).isSameOrAfter(parseInt(expires_in))
     : false;
 };

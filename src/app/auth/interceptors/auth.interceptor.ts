@@ -8,22 +8,16 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth.service';
 const TOKEN_KEY = 'access_token';
 const TOKEN_KEY_HC = 'access_token_hc';
 const ENDPOINT_SEC_AUTH = 'auth';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authSvc: AuthService) {}
-
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     if (request.url.includes(ENDPOINT_SEC_AUTH)) return next.handle(request);
-    // if (!this.authSvc.isLoggedIn()) {
-    //   return next.handle(request);
-    // }
     return next.handle(this.addAccessToken(request));
   }
 
@@ -35,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const newRequest = request;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${authToken}`,
-      Accept: 'application/json',
+      Accept: '*/*',
     });
     if (authToken) {
       return newRequest.clone({ headers });

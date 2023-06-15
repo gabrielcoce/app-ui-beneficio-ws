@@ -56,7 +56,7 @@ export class ApproveEntryComponent implements OnInit {
     // console.log('encryptedAccount', encryptedAccount);
     // console.log('parametroEncriptado', parametroEncriptado);
     this.noCuenta = this.decrypt(parametroEncriptado);
-    console.log('cuenta', this.noCuenta);
+    //console.log('cuenta', this.noCuenta);
     await this.obtenerParcialidades(this.noCuenta);
   }
   private async obtenerParcialidades(cuenta: string) {
@@ -66,6 +66,21 @@ export class ApproveEntryComponent implements OnInit {
       return;
     }
     this.spinner.show();
+    try {
+      const consulta = await this.verificarPermitirIngreso(cuenta);
+      this.spinner.hide();
+      if (typeof consulta === 'string') {
+        await this.showMessage('info', consulta);
+        return;
+      }
+      if (!consulta) {
+        await this.showMessage('info', 'No. Cuenta ya fue verificada');
+        return;
+      }
+    } catch (error) {
+      this.spinner.hide();
+      return;
+    }
     const data$ = this.beneficioSvc.getParcialidadesByCuentaSvc(cuenta);
     await firstValueFrom(data$)
       .then(async (consulta) => {
@@ -123,11 +138,17 @@ export class ApproveEntryComponent implements OnInit {
           return;
         }
         await this.showMessage('success', consulta.message);
+        window.location.reload();
       })
       .catch(() => {
         this.spinner.hide();
       });
   }
+  async verificarPermitirIngreso(cuenta: string) {
+    const consulta$ = this.beneficioSvc.getVerificarPermitirCuentaSvc(cuenta);
+    return await firstValueFrom(consulta$).then((consulta) => consulta);
+  }
+
   private decrypt(textToDecrypt: string): string {
     return CryptoJS.AES.decrypt(textToDecrypt, this.key, {
       mode: CryptoJS.mode.ECB,

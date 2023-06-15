@@ -26,6 +26,9 @@ export class BeneficioService {
       responseType: 'text' || 'json',
     });
   }
+  getVerificarPermitirCuentaSvc(cuenta: string) {
+    return this.http.get<boolean>(`${URL_CUENTA}/verificar-permitir-ingreso/${cuenta}`);
+  }
 
   getVerificarCuentaSvc() {
     return this.http.get<boolean>(`${URL_CUENTA}/verificar-obtener-cuentas`);
