@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { NgHcaptchaModule } from 'ng-hcaptcha';
 import { environment } from 'src/environments/environment';
 import { HcaptchaComponent } from './hcaptcha/hcaptcha.component';
 import { ApproveEntryComponent } from './approve-entry/approve-entry.component';
+import { MatTableComponent } from '../management/mat-table/mat-table.component';
 
 @NgModule({
   declarations: [LoginComponent, HcaptchaComponent, ApproveEntryComponent],
@@ -20,7 +21,9 @@ import { ApproveEntryComponent } from './approve-entry/approve-entry.component';
       siteKey: environment.SiteKeyHcapcha,
       languageCode: 'es',
     }),
+    MatTableComponent,
   ],
   exports: [LoginComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AuthModule {}

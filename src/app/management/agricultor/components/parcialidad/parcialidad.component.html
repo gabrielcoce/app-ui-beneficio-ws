@@ -2,7 +2,8 @@
 <button mat-raised-button class="mx-3" (click)="crearParcialidad()" >Crear Parcialidad</button>
 <ng-container *ngIf="showBtn$ | async; else Loading">
   <button mat-raised-button (click)="verParcialidades()">Ver Parcialidades</button>
-  <div class="my-5">
+  <button mat-raised-button class="mx-3" *ngIf="showTable" (click)="generarQr()">Generar QR</button>
+  <div class="my-5" *ngIf="showTable">
     <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData">
     </app-mat-table>
   </div>

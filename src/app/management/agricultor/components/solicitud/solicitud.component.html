@@ -3,11 +3,11 @@
 <ng-container *ngIf="showBtn$ | async; else Loading">
   <button mat-raised-button (click)="verSolicitudes()">Ver Solicitudes</button>
   <!--? COMPONENTE DE TABLA -->
-  <div class="my-5">
+  <div class="my-5" *ngIf="showTable">
     <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData">
     </app-mat-table>
   </div>
 </ng-container>
 <ng-template #Loading>
-  <span>NO TIENE SOLICITUDES REGISTRADAS</span>
+  <span class="mx-3">NO TIENE SOLICITUDES REGISTRADAS</span>
 </ng-template>

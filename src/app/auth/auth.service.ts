@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, ignoreElements, tap } from 'rxjs';
-import { User, UserWithToken } from './model/user.interface';
+import { Observable, ignoreElements, map, tap } from 'rxjs';
+import { IAccessToken, User, UserWithToken } from './model/user.interface';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LoginCredentials } from './model/login.credentials.interface';
@@ -9,13 +9,12 @@ import jwt_decode from 'jwt-decode';
 import { Role } from './model/roles.type';
 
 const TOKEN_KEY = 'access_token';
-const TOKEN_KEY_HC = 'access_token_hc';
 const USER_NAME_KEY = 'user_name';
 const ROLE_KEY = 'role';
 const EXP_KEY = 'expires_in';
-const EXP_KEY_HC = 'expires_in_hc';
 const URL_AUTH = environment.BASE_API + '/beneficio/auth';
 const URL_TEST = environment.BASE_API + '/test';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,6 +28,11 @@ export class AuthService {
       tap(() => this.redirectToDashboard()),
       ignoreElements()
     );
+  }
+  getTokenHcaptcha(captchaResponse: string) {
+    return this.httpClient
+      .get<IAccessToken>(`${URL_AUTH}/hc/${captchaResponse}`)
+      .pipe(map((token: IAccessToken) => token.accessToken));
   }
   logout(): void {
     this.removeUserFromLocalStorage();
@@ -65,16 +69,6 @@ export class AuthService {
     }
   }
 
-  private saveTokenToLocalStoreHc(token: string): void {
-    if (token) {
-      const user = this.decodeToken(token);
-      localStorage.setItem(TOKEN_KEY_HC, user.token);
-      const expires_in = user.exp - 30;
-      localStorage.setItem(EXP_KEY_HC, JSON.stringify(expires_in));
-      //this.test().subscribe({next: (data=>{ console.log(data)})});
-    }
-  }
-
   private removeUserFromLocalStorage(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_NAME_KEY);
@@ -85,14 +79,6 @@ export class AuthService {
 
   private isTokenExpire() {
     const expires_in = localStorage.getItem(EXP_KEY);
-    return (
-      expires_in === null || // no existe variable
-      parseInt(expires_in) <= new Date().getTime()
-    ); // o token vencido
-  }
-
-  private isTokenExpireHc() {
-    const expires_in = localStorage.getItem(EXP_KEY_HC);
     return (
       expires_in === null || // no existe variable
       parseInt(expires_in) <= new Date().getTime()

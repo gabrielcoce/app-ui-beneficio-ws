@@ -10,3 +10,8 @@ export interface User {
 export interface UserWithToken extends User {
   token: string;
 }
+
+export interface IAccessToken {
+  accessToken: string;
+}
+

@@ -1,1 +1,13 @@
-<p>solicitud-bc works!</p>
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<ng-container *ngIf="showBtn$ | async; else Loading">
+  <button mat-raised-button class="mx-3" (click)="verSolicitudes()">Ver Solicitudes</button>
+  <!--? COMPONENTE DE TABLA -->
+  <div class="my-5" *ngIf="showTable">
+    <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData"
+      (dataTable)="obtenerDataTabla($event)">
+    </app-mat-table>
+  </div>
+</ng-container>
+<ng-template #Loading>
+  <span class="mx-3">NO HAY SOLICITUDES PARA APROBAR O RECHAZAR</span>
+</ng-template>

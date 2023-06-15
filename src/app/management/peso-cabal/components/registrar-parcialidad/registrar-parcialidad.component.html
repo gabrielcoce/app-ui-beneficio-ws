@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Registrar
+  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">{{title}}
     Parcialidad
   </h1>
   <form [formGroup]="form" class="space-y-4 md:space-y-6">
@@ -11,6 +11,10 @@
     <mat-form-field appearance="outline" class="w-full lowercase font-black">
       <input matInput type="text" class="outline-0 focus:ring-0 text-center" formControlName="parcialidadId">
     </mat-form-field>
+    <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Peso Ingresado (Toneladas)</mat-label>
+    <mat-form-field appearance="outline" class="w-full font-black">
+      <input matInput type="text" class="outline-0 focus:ring-0 text-center" formControlName="pesoIngresado">
+    </mat-form-field>
     <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Peso a Registrar (Toneladas)</mat-label>
     <mat-form-field appearance="outline" class="w-full">
       <input matInput type="text" class="outline-0 focus:ring-0" formControlName="pesoRegistrado">
@@ -20,7 +24,13 @@
 <mat-dialog-actions>
   <div class="container text-center">
     <button mat-raised-button (click)="cerrar()"><mat-icon>close</mat-icon>Cerrar</button>
-    <button class="mx-3" mat-raised-button (click)="enviar()"
-      [disabled]="form.invalid"><mat-icon>done</mat-icon>Enviar</button>
+    <ng-container *ngIf="origen else actualizarParcialidad">
+      <button class="mx-3" mat-raised-button (click)="enviar()"
+        [disabled]="form.invalid"><mat-icon>done</mat-icon>Registrar</button>
+    </ng-container>
+    <ng-template #actualizarParcialidad>
+      <button class="mx-3" mat-raised-button (click)="actualizar()"
+        [disabled]="form.invalid"><mat-icon>done</mat-icon>Actualizar</button>
+    </ng-template>
   </div>
 </mat-dialog-actions>

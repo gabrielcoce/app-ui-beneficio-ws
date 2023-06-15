@@ -6,25 +6,56 @@
         uppercase }}
       </th>
       <td mat-cell *matCellDef="let profile">{{ profile[col] | uppercase }}
-        <ng-container *ngIf="col === 'licenciaPiloto'">
+        <!-- <ng-container *ngIf="col === 'licenciaPiloto'">
           <a class="mouse text-blue-500 hover:text-blue-700"
             (click)="obtenerGestion(profile['object'])">{{profile['qrlicencia']
             | uppercase}}</a>
-        </ng-container>
+        </ng-container> -->
         <ng-container *ngIf="col === 'actionRegister'">
-          <ng-container *ngIf="!profile['parcialidadRegistrada']">
-            <button mat-button (click)="registrarParcialidad(profile['noCuenta'], profile['parcialidadId'])">Registrar Parcialidad</button>
+          <ng-container *ngIf="!profile['parcialidadRegistrada'] else notVisible">
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              (click)="registrarParcialidad(profile['noCuenta'], profile['parcialidadId'], profile['pesoIngresado'])">Registrar</button>
           </ng-container>
+          <ng-template #notVisible>
+            <mat-icon style="font-size: 1.5rem; color: #1369a0; font-weight: bold;">disabled_visible
+            </mat-icon>
+          </ng-template>
         </ng-container>
         <ng-container *ngIf="col === 'actionUpdate'">
-          <ng-container *ngIf="profile['parcialidadRegistrada'] && !profile['parcialidadVerificada']">
-            <p>Actualizar</p>
+          <ng-container *ngIf="profile['parcialidadRegistrada'] && !profile['parcialidadVerificada'] else notVisible">
+            <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+              (click)="actualizarParcialidad(profile['noCuenta'], profile['parcialidadId'], profile['pesoIngresado'])">Actualizar</button>
           </ng-container>
+          <ng-template #notVisible>
+            <mat-icon style="font-size: 1.5rem; color: #1369a0; font-weight: bold;">disabled_visible
+            </mat-icon>
+          </ng-template>
         </ng-container>
         <ng-container *ngIf="col === 'actionVerificar'">
-          <ng-container *ngIf="profile['parcialidadRegistrada'] && !profile['parcialidadVerificada']">
-            <p>Verificar</p>
+          <ng-container *ngIf="profile['parcialidadRegistrada'] && !profile['parcialidadVerificada'] else notVisible">
+            <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
+              (click)="verificarParcialidad(profile['parcialidadId'])">Verificar</button>
           </ng-container>
+          <ng-template #notVisible>
+            <mat-icon style="font-size: 1.5rem; color: #1369a0; font-weight: bold;">disabled_visible
+            </mat-icon>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="col === 'tolerancia'">
+          <p *ngIf="profile['mostrar']  == '0'" class="bg-green-500 text-white font-bold py-2 px-4 rounded">
+            {{profile['calculoTolerancia']}}</p>
+          <p *ngIf="profile['mostrar']  == '1'" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">
+            {{profile['calculoTolerancia']}}</p>
+          <p *ngIf="profile['mostrar']  == '2'" class="bg-red-500 text-white font-bold py-2 px-4 rounded">
+            {{profile['calculoTolerancia']}}</p>
+        </ng-container>
+        <ng-container *ngIf="col === 'aprobar'">
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            (click)="aprobarSolicitud(profile['noSolicitud'])">Aprobar</button>
+        </ng-container>
+        <ng-container *ngIf="col === 'rechazar'">
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            (click)="rechazarSolicitud(profile['noSolicitud'])">Rechazar</button>
         </ng-container>
       </td>
     </ng-container>

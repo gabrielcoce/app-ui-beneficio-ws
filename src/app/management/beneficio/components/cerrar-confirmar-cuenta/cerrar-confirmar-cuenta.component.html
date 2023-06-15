@@ -1,0 +1,23 @@
+<mat-dialog-content>
+  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">{{title}} Cuenta
+  </h1>
+  <form [formGroup]="form" class="space-y-4 md:space-y-6">
+    <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">Ingrese No. Cuenta</mat-label>
+    <mat-form-field appearance="outline" class="w-full uppercase">
+      <input matInput type="text" class="outline-0 focus:ring-0 text-center" maxlength="25" formControlName="noCuenta">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container text-center">
+    <button mat-raised-button (click)="cerrar()"><mat-icon>close</mat-icon>Cerrar</button>
+    <ng-container *ngIf="origen else showBtn">
+      <button class="mx-3" mat-raised-button (click)="cerrarCuenta()"
+        [disabled]="form.invalid"><mat-icon>done</mat-icon>Cerrar Cuenta</button>
+    </ng-container>
+    <ng-template #showBtn>
+      <button class="mx-3" mat-raised-button (click)="confirmarCuenta()"
+        [disabled]="form.invalid"><mat-icon>done</mat-icon>Confirmar Cuenta</button>
+    </ng-template>
+  </div>
+</mat-dialog-actions>

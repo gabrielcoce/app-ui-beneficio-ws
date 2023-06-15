@@ -38,7 +38,7 @@ export interface ITableSolicitudes {
   createdAt: string;
 }
 
-export interface ISuccessResponse {
+export interface IASuccessResponse {
   code: number;
   data: any;
   message: string;
@@ -74,9 +74,6 @@ export interface ITableParcialidades {
   placaTransporte: string;
   pesoIngresado: string;
   parcialidadId: string;
-  qrlicencia: string;
-  object: any;
-
 }
 
 export interface IPiloto {

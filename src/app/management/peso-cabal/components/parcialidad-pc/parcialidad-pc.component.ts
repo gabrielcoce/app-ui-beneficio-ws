@@ -13,7 +13,7 @@ import {
 } from 'src/app/management/interfaces/peso-cabal.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialog } from '@angular/material/dialog';
-import { RegistrarParcialidadComponent } from '../registrar-parcialidad/registrar-parcialidad.component';
+import { ParcialidadesRegistradasComponent } from '../parcialidades-registradas/parcialidades-registradas.component';
 
 @Component({
   selector: 'app-parcialidad-pc',
@@ -39,12 +39,14 @@ export class ParcialidadPcComponent {
     'actionVerificar',
   ];
   noCuenta: string = '';
+  showBtn: boolean = false;
+  showTable: boolean = false;
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly pesoCabalSvc: PesoCabalService,
     private spinner: NgxSpinnerService,
-    private cdr: ChangeDetectorRef,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {
     this.buildForm();
   }
@@ -63,21 +65,29 @@ export class ParcialidadPcComponent {
       ],
     });
   }
+  onChanges() {
+    this.showBtn = false;
+    this.showTable = false;
+    this.cdr.detectChanges();
+  }
   async buscar() {
     if (this.form.invalid) return;
-    this.spinner.show();
     const noCuenta = this.transformUpper(this.form.get('noCuenta')?.value);
+    this.noCuenta = noCuenta;
+    this.spinner.show();
     const consulta$ = this.pesoCabalSvc.getParcialidadesSvc(noCuenta);
     await firstValueFrom(consulta$)
       .then(async (consulta) => {
+        this.showBtn = await this.verificaExistencia(noCuenta);
+        this.spinner.hide();
         if (typeof consulta === 'string') {
-          //console.log(res);
+          this.showTable = false;
+          this.cdr.detectChanges();
           await this.showMessage('info', consulta);
           return;
         }
-        this.noCuenta = noCuenta;
         this.tableData = await this.llenarJsonTabla(consulta);
-        this.spinner.hide();
+        this.showTable = true;
         this.cdr.detectChanges();
       })
       .catch((error) => {
@@ -85,10 +95,81 @@ export class ParcialidadPcComponent {
         this.spinner.hide();
       });
   }
+
+  async iniciarPesaje() {
+    if (this.form.invalid) return;
+    const confirmed = await this.confirmMessage(
+      'question',
+      `¿Desea iniciar pesaje?`
+    );
+    if (!confirmed) return;
+    this.spinner.show();
+    const iniciar$ = this.pesoCabalSvc.putIniciarPesajeSvc(this.noCuenta);
+    await firstValueFrom(iniciar$)
+      .then(async (consulta) => {
+        this.spinner.hide();
+        if (typeof consulta === 'string') {
+          await this.showMessage('info', consulta);
+          return;
+        }
+        await this.showMessage('success', consulta.message);
+      })
+      .catch(() => {
+        this.spinner.hide();
+      });
+  }
+  async finalizaPesaje() {
+    if (this.form.invalid) return;
+    const confirmed = await this.confirmMessage(
+      'question',
+      `¿Desea finalizar pesaje?`
+    );
+    if (!confirmed) return;
+    this.spinner.show();
+    const finalizar$ = this.pesoCabalSvc.putFinalizarPesajeSvc(this.noCuenta);
+    await firstValueFrom(finalizar$)
+      .then(async (consulta) => {
+        this.spinner.hide();
+        if (typeof consulta === 'string') {
+          await this.showMessage('info', consulta);
+          return;
+        }
+        await this.showMessage('success', consulta.message);
+        window.location.reload();
+      })
+      .catch(() => {
+        this.spinner.hide();
+      });
+  }
+  async verParcialidadesRegistradas() {
+    if (this.form.invalid) return;
+    try {
+      this.spinner.show();
+      const data$ = this.pesoCabalSvc.getParcialidadesRegistradasSvc(
+        this.noCuenta
+      );
+      const parcialidades = await firstValueFrom(data$).then(
+        (consulta) => consulta
+      );
+      this.spinner.hide();
+      this.dialog.open(ParcialidadesRegistradasComponent, {
+        width: 'auto',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          parcialidades,
+          noCuenta: this.noCuenta,
+        },
+      });
+    } catch (error) {
+      console.error('error', error);
+      this.spinner.hide();
+    }
+  }
   private async llenarJsonTabla(data: IParcialidadesPc[]) {
     const promises = data.map(async (element) => {
       const { parcialidadId, pesoIngresado, parcialidadVerificada } = element;
-      const parcialidadRegistrada = await this.verificarParcialidad(
+      const parcialidadRegistrada = await this.verificaParcialidad(
         parcialidadId
       );
       return {
@@ -105,9 +186,14 @@ export class ParcialidadPcComponent {
     const json: ITableParcialidadesPc[] = await Promise.all(promises);
     return json;
   }
-  private async verificarParcialidad(parcialidad: any) {
+  private async verificaParcialidad(parcialidad: any) {
     const verificar$ = this.pesoCabalSvc.verificaExistenciaSvc(parcialidad);
     return await firstValueFrom(verificar$).then((res) => res);
+  }
+  private async verificaExistencia(noCuenta: string) {
+    const verifica$ =
+      this.pesoCabalSvc.getVerificaExistenciaParcialidadesSvc(noCuenta);
+    return await firstValueFrom(verifica$).then((res) => res);
   }
   obtenerDataTabla(data: string) {
     //console.log('data -->', data);
@@ -140,7 +226,21 @@ export class ParcialidadPcComponent {
     });
     await Toast.fire({
       icon,
-      text: text.toUpperCase(),
+      text: text ? text.toUpperCase() : text,
     });
+  }
+  private async confirmMessage(icon: SweetAlertIcon, text: string) {
+    return await Swal.fire({
+      icon,
+      text: text.toUpperCase(),
+      confirmButtonColor: '#1369A0',
+      confirmButtonText: 'ACEPTAR',
+      cancelButtonColor: '#E63946',
+      cancelButtonText: 'CANCELAR',
+      showCancelButton: true,
+      reverseButtons: true,
+      backdrop: true,
+      allowOutsideClick: false,
+    }).then((result) => result.isConfirmed);
   }
 }

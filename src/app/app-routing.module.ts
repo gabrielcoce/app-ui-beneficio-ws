@@ -4,6 +4,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { IsLoggedInGuard } from './auth/guards/auth.guard';
 import { HcaptchaComponent } from './auth/hcaptcha/hcaptcha.component';
 import { ApproveEntryComponent } from './auth/approve-entry/approve-entry.component';
+import { HcaptchaGuard } from './auth/guards/hcaptcha.guard';
 
 const routes: Routes = [
   {
@@ -16,13 +17,13 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'verificar-qr',
-    component: HcaptchaComponent,
+    path: 'hc/verificar-ingreso/:noCuenta',
+    component: ApproveEntryComponent,
+    canMatch: [HcaptchaGuard],
   },
   {
-    path:'permitir-ingreso',
-    component: ApproveEntryComponent,
-    canMatch: [IsLoggedInGuard],
+    path: 'verificar-qr',
+    component: HcaptchaComponent,
   },
   {
     path: '',

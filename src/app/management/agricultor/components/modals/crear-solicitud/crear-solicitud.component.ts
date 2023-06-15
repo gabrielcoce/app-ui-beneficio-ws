@@ -8,6 +8,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { AgricultorService } from '../../../agricultor.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 const USER_NAME_KEY = 'user_name';
 const userName = localStorage.getItem(USER_NAME_KEY)!;
 @Component({
@@ -20,7 +21,8 @@ export class CrearSolicitudComponent {
   constructor(
     private readonly formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CrearSolicitudComponent>,
-    private agricultorSvc: AgricultorService
+    private agricultorSvc: AgricultorService,
+    private spinner: NgxSpinnerService
   ) {
     this.buildForm();
   }
@@ -43,7 +45,7 @@ export class CrearSolicitudComponent {
 
   async enviar() {
     if (this.form.invalid) return;
-    const tipoSolicitud = this.form.get('tipoSolicitud')?.value;
+    const tipoSolicitud = 10;
     const pesoTotal = this.form.get('pesoTotal')?.value;
     const cantidadParcialidades = this.form.get('cantidadParcialidades')?.value;
     const data: ICrearSolicitud = {
@@ -52,27 +54,23 @@ export class CrearSolicitudComponent {
       pesoTotal,
       cantidadParcialidades,
     };
-    //console.log('data', data);
+    this.spinner.show();
     const data$ = this.agricultorSvc.crearSolicitudSvc(data);
     await firstValueFrom(data$)
       .then(async (consulta) => {
+        this.spinner.hide();
         if (typeof consulta === 'string') {
-          //console.log(res);
           await this.showMessage('info', consulta);
           return;
         }
         await this.showMessage('success', consulta.message);
         this.cerrar();
       })
-      .catch((error) => {
+      .catch(() => {
+        this.spinner.hide();
         //console.error(error);
       });
   }
-
-  // private stringToNumber(str: string) {
-  //   if (!str) return 0;
-  //   return Number(str);
-  // }
 
   private async showMessage(icon: SweetAlertIcon, text: string) {
     const Toast = Swal.mixin({
@@ -90,7 +88,7 @@ export class CrearSolicitudComponent {
     });
     await Toast.fire({
       icon,
-      text: text.toUpperCase(),
+      text: text ? text.toUpperCase() : text,
     });
   }
 }

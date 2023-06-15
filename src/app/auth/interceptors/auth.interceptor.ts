@@ -10,6 +10,7 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 const TOKEN_KEY = 'access_token';
+const TOKEN_KEY_HC = 'access_token_hc';
 const ENDPOINT_SEC_AUTH = 'auth';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -20,26 +21,23 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     if (request.url.includes(ENDPOINT_SEC_AUTH)) return next.handle(request);
-    if (!this.authSvc.isLoggedIn()) {
-      window.location.reload();
-      return next.handle(request);
-    }
+    // if (!this.authSvc.isLoggedIn()) {
+    //   return next.handle(request);
+    // }
     return next.handle(this.addAccessToken(request));
   }
 
   private addAccessToken(request: HttpRequest<unknown>): HttpRequest<unknown> {
     const accessToken = localStorage.getItem(TOKEN_KEY);
-    //console.info('add token from localStorage -->', accessToken);
-    //console.log('method', request.method);
+    const accessTokenHC = localStorage.getItem(TOKEN_KEY_HC);
+    const origen = window.location.href.includes('hc');
+    const authToken = origen ? accessTokenHC : accessToken;
     const newRequest = request;
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${accessToken}`,
-      // 'Access-Control-Allow-Origin': '*',
-      // 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-      // 'Access-Control-Allow-Headers': 'Content-Type',
+      Authorization: `Bearer ${authToken}`,
       Accept: 'application/json',
     });
-    if (accessToken) {
+    if (authToken) {
       return newRequest.clone({ headers });
     }
     return newRequest;

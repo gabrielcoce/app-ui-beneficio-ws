@@ -3,6 +3,9 @@ module.exports = {
   darkMode: "class",
   content: ["./src/**/*.{html,js}"],
   theme: {
+    container: {
+      center: true,
+    },
     extend: {
       colors: {
         primary: {
@@ -58,4 +61,3 @@ module.exports = {
   },
   plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
 };
-

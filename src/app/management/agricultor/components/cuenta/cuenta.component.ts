@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { AgricultorService } from '../../agricultor.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import dayjs from 'dayjs';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { firstValueFrom } from 'rxjs';
-import { ICuentas, ITableCuentas } from 'src/app/management/interfaces/agricultor.interface';
+import {
+  ICuentas,
+  ITableCuentas,
+} from 'src/app/management/interfaces/agricultor.interface';
 
 const USER_NAME_KEY = 'user_name';
 const userName = localStorage.getItem(USER_NAME_KEY)!;
@@ -32,6 +39,7 @@ export class CuentaComponent {
     'parcialidades',
     'createdAt',
   ];
+  showTable: boolean = false;
   constructor(
     private agricultorSvc: AgricultorService,
     private spinner: NgxSpinnerService,
@@ -46,33 +54,34 @@ export class CuentaComponent {
     const cuentas$ = this.agricultorSvc.getCuentasSvc(userName);
     await firstValueFrom(cuentas$)
       .then(async (consulta) => {
+        this.spinner.hide();
         if (typeof consulta === 'string') {
-          console.log(consulta);
+          this.showTable = false;
+          this.cdr.detectChanges();
           await this.showMessage('info', consulta);
           return;
         }
         this.tableData = this.llenarJsonTabla(consulta);
-        this.spinner.hide();
+        this.showTable = true;
         this.cdr.detectChanges();
       })
-      .catch((error) => {
-        console.error('error', error);
+      .catch(() => {
         this.spinner.hide();
       });
   }
 
-  private llenarJsonTabla(data: ICuentas[]){
+  private llenarJsonTabla(data: ICuentas[]) {
     let json: ITableCuentas[] = [];
-    data.forEach((element)=>{
-      const {noCuenta, estado, peso, parcialidades, createdAt} = element;
+    data.forEach((element) => {
+      const { noCuenta, estado, peso, parcialidades, createdAt } = element;
       json.push({
         noCuenta,
         estado,
         peso: this.numberToString(peso),
         parcialidades: this.numberToString(parcialidades),
-        createdAt: this.convertDate(createdAt)
-      })
-    })
+        createdAt: this.convertDate(createdAt),
+      });
+    });
     return json;
   }
 
@@ -101,7 +110,7 @@ export class CuentaComponent {
     });
     await Toast.fire({
       icon,
-      text: text.toUpperCase(),
+      text: text ? text.toUpperCase() : text,
     });
   }
 }

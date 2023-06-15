@@ -1,20 +1,14 @@
-<div class="fixed inset-0 flex items-center justify-center z-50">
-    <div class="bg-white p-8 rounded-lg shadow-lg">
-      <div class="bg-black text-white px-4 py-2 rounded-t-lg">
-        <h2 class="text-xl font-bold">CUENTA: {{dataModal.noCuenta}}</h2>
-      </div>
-      <div class="py-4">
-        <div class="max-w-sm mx-auto justify-center">
-          <qrcode [qrdata]="url" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-        </div>
-        <div class="px-6 py-4">
-          <div class="font-bold text-xl mb-2">Licencia: {{dataModal.licenciaPiloto}}</div>
-        </div>
-        <div class="flex justify-center">
-          <button class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            (click)="aceptModal()">Aceptar</button>
-        </div>
-      </div>
-    </div>
+<mat-dialog-content>
+  <div class="bg-black text-white px-4 py-2 rounded-t-lg">
+    <h2 class="text-xl font-bold">CUENTA: {{noCuenta}}</h2>
   </div>
-  
+  <div class="flex justify-center">
+    <qrcode [qrdata]="url" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container text-center my-3">
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      (click)="accept()">Aceptar</button>
+  </div>
+</mat-dialog-actions>

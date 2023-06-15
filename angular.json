@@ -29,7 +29,8 @@
               "dayjs/plugin/isSameOrAfter",
               "dayjs/plugin/isSameOrBefore",
               "sweetalert2",
-              "qrcode"
+              "qrcode",
+              "crypto-js"
             ],
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],

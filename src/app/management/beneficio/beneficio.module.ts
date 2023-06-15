@@ -7,16 +7,24 @@ import { SolicitudBcComponent } from './components/solicitud-bc/solicitud-bc.com
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { CerrarConfirmarCuentaComponent } from './components/cerrar-confirmar-cuenta/cerrar-confirmar-cuenta.component';
+import { MatTableComponent } from '../mat-table/mat-table.component';
 
 
 @NgModule({
-  declarations: [BeneficioComponent, CuentaBcComponent, SolicitudBcComponent],
+  declarations: [
+    BeneficioComponent,
+    CuentaBcComponent,
+    SolicitudBcComponent,
+    CerrarConfirmarCuentaComponent,
+  ],
   imports: [
     CommonModule,
     BeneficioRoutingModule,
     ReactiveFormsModule,
     MaterialModule,
     NgxSpinnerModule,
+    MatTableComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

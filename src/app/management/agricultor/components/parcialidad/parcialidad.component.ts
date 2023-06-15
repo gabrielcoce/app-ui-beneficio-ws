@@ -9,6 +9,7 @@ import {
 } from 'src/app/management/interfaces/agricultor.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CrearParcialidadComponent } from '../modals/crear-parcialidad/crear-parcialidad.component';
+import { QrGenericComponent } from 'src/app/management/qr-generic/qr-generic.component';
 const USER_NAME_KEY = 'user_name';
 const userName = localStorage.getItem(USER_NAME_KEY)!;
 
@@ -34,6 +35,8 @@ export class ParcialidadComponent {
     'placaTransporte',
     'pesoIngresado',
   ];
+  showTable: boolean = false;
+  noCuenta: string = '';
   constructor(
     private agricultorSvc: AgricultorService,
     private spinner: NgxSpinnerService,
@@ -49,24 +52,38 @@ export class ParcialidadComponent {
       disableClose: true,
     });
   }
-
+  generarQr() {
+    this.dialog.open(QrGenericComponent, {
+      width: 'auto',
+      height: 'auto',
+      disableClose: false,
+      data: {
+        noCuenta: this.noCuenta,
+      },
+    });
+  }
   async verParcialidades() {
     if (this.tableData) return;
     this.spinner.show();
     const parcialidades$ = this.agricultorSvc.getParcialidadesSvc(userName);
     await firstValueFrom(parcialidades$)
       .then(async (consulta) => {
+        this.spinner.hide();
         if (typeof consulta === 'string') {
-          console.log(consulta);
+          this.showTable = false;
+          this.cdr.detectChanges();
           await this.showMessage('info', consulta);
           return;
         }
         this.tableData = this.llenarJsonTabla(consulta);
-        this.spinner.hide();
+        const cuentas = this.llenarJsonTabla(consulta).map(
+          (element) => element.noCuenta
+        );
+        this.noCuenta = cuentas[0];
+        this.showTable = true;
         this.cdr.detectChanges();
       })
-      .catch((error) => {
-        console.error('error', error);
+      .catch(() => {
         this.spinner.hide();
       });
   }
@@ -83,11 +100,9 @@ export class ParcialidadComponent {
       json.push({
         noCuenta,
         parcialidadId,
-        licenciaPiloto: '',
+        licenciaPiloto,
         placaTransporte,
         pesoIngresado: this.numberToString(pesoIngresado),
-        qrlicencia: licenciaPiloto,
-        object: element
       });
     });
     return json;
@@ -113,7 +128,7 @@ export class ParcialidadComponent {
     });
     await Toast.fire({
       icon,
-      text: text.toUpperCase(),
+      text: text ? text.toUpperCase() : text,
     });
   }
 }

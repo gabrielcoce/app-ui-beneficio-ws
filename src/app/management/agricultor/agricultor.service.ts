@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
+  IASuccessResponse,
   ICrearParcialidad,
   ICrearSolicitud,
   ICuentas,
   IParcialidades,
   IPiloto,
   ISolicitudes,
-  ISuccessResponse,
   ITransporte,
 } from '../interfaces/agricultor.interface';
 const URL_TEST = environment.BASE_API + '/test';
@@ -30,13 +30,13 @@ export class AgricultorService {
     });
   }
   crearSolicitudSvc(data: ICrearSolicitud) {
-    return this.http.post<ISuccessResponse>(
+    return this.http.post<IASuccessResponse>(
       `${URL_SOLICITUD}/crear-solicitud`,
       data
     );
   }
   crearParcialidadSvc(data: ICrearParcialidad) {
-    return this.http.post<ISuccessResponse>(
+    return this.http.post<IASuccessResponse>(
       `${URL_PARCIALIDAD}/crear-parcialidad`,
       data
     );

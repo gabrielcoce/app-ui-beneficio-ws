@@ -16,6 +16,9 @@ export class RegistrarParcialidadComponent implements OnInit {
   form!: FormGroup;
   noCuenta: string = '';
   parcialidadId: any;
+  pesoIngresado: string = '';
+  origen: boolean = true;
+  title: string = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<RegistrarParcialidadComponent>,
@@ -27,6 +30,9 @@ export class RegistrarParcialidadComponent implements OnInit {
     //throw new Error('Method not implemented.');
     this.noCuenta = this.dialogRef.componentInstance.data.noCuenta;
     this.parcialidadId = this.dialogRef.componentInstance.data.parcialidadId;
+    this.pesoIngresado = this.dialogRef.componentInstance.data.pesoIngresado;
+    this.origen = this.dialogRef.componentInstance.data.origen;
+    this.title = this.origen ? 'Registrar' : 'Actualizar';
     this.builForm();
   }
 
@@ -34,6 +40,7 @@ export class RegistrarParcialidadComponent implements OnInit {
     this.form = this.formBuilder.group({
       noCuenta: [{ value: this.noCuenta, disabled: true }],
       parcialidadId: [{ value: this.parcialidadId, disabled: true }],
+      pesoIngresado: [{ value: this.pesoIngresado, disabled: true }],
       pesoRegistrado: [
         '',
         { validators: [Validators.minLength(1), Validators.required] },
@@ -57,6 +64,35 @@ export class RegistrarParcialidadComponent implements OnInit {
     };
     this.spinner.show();
     const data$ = this.pesoCabalSvc.registrarParcialidadSvc(data);
+    await firstValueFrom(data$)
+      .then(async (consulta) => {
+        this.spinner.hide();
+        if (typeof consulta === 'string') {
+          //console.log(res);
+          await this.showMessage('info', consulta);
+          return;
+        }
+        await this.showMessage('success', consulta.message);
+        this.dialogRef.close('success');
+      })
+      .catch(async (error) => {
+        this.spinner.hide();
+        await this.showMessage('error', error);
+      });
+  }
+  async actualizar() {
+    const noCuenta = this.transformUpper(this.form.get('noCuenta')?.value);
+    const parcialidadId = this.transformLower(
+      this.form.get('parcialidadId')?.value
+    );
+    const pesoRegistrado = this.form.get('pesoRegistrado')?.value;
+    const data: IRegistrarParcialidadPc = {
+      noCuenta,
+      parcialidadId,
+      pesoRegistrado,
+    };
+    this.spinner.show();
+    const data$ = this.pesoCabalSvc.actualizarParcialidadSvc(data);
     await firstValueFrom(data$)
       .then(async (consulta) => {
         this.spinner.hide();
@@ -99,7 +135,7 @@ export class RegistrarParcialidadComponent implements OnInit {
     });
     await Toast.fire({
       icon,
-      text: text.toUpperCase(),
+      text: text ? text.toUpperCase() : text,
     });
   }
 }

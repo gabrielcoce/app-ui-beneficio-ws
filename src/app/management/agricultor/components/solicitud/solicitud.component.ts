@@ -44,6 +44,7 @@ export class SolicitudComponent implements OnInit {
     'cantidadParcialidades',
     'createdAt',
   ];
+  showTable: boolean = false;
   constructor(
     private dialog: MatDialog,
     private agricultorSvc: AgricultorService,
@@ -71,17 +72,18 @@ export class SolicitudComponent implements OnInit {
     const solicitudes$ = this.agricultorSvc.getSolicitudesSvc(userName);
     await firstValueFrom(solicitudes$)
       .then(async (consulta) => {
+        this.spinner.hide();
         if (typeof consulta === 'string') {
-          console.log(consulta);
+          this.showTable = false;
+          this.cdr.detectChanges();
           await this.showMessage('info', consulta);
           return;
         }
         this.tableData = this.llenarJsonTabla(consulta);
-        this.spinner.hide();
+        this.showTable = true;
         this.cdr.detectChanges();
       })
-      .catch((error) => {
-        console.error('error', error);
+      .catch(() => {
         this.spinner.hide();
       });
   }
@@ -134,7 +136,7 @@ export class SolicitudComponent implements OnInit {
     });
     await Toast.fire({
       icon,
-      text: text.toUpperCase(),
+      text: text ? text.toUpperCase() : text,
     });
   }
 }

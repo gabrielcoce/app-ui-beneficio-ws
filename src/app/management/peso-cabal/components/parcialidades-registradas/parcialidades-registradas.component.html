@@ -1,0 +1,17 @@
+<mat-dialog-content>
+  <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Parcialidades
+    Registradas
+  </h1>
+  <h2 class="text-sm font-bold leading-tight tracking-tight text-gray-900 dark:text-white">No. Cuenta
+    {{noCuenta | uppercase}}
+  </h2>
+  <div class="my-5">
+    <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData">
+    </app-mat-table>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container text-center">
+    <button mat-raised-button (click)="cerrar()"><mat-icon>close</mat-icon>Cerrar</button>
+  </div>
+</mat-dialog-actions>

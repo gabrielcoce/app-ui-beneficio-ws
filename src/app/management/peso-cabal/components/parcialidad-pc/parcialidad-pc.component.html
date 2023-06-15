@@ -1,15 +1,23 @@
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
-<!-- <button mat-raised-button class="mx-3" (click)="registrarParcialidad()" [disabled]="!noCuenta">Registrar Parcialidad</button> -->
 <section class="mx-3 my-3">
   <form [formGroup]="form" class="space-y-4 md:space-y-6">
     <mat-label class="block text-sm font-medium text-gray-900 dark:text-white">No. Cuenta</mat-label>
     <mat-form-field appearance="outline" class="w-full uppercase">
-      <input matInput type="text" class="outline-0 focus:ring-0 text-center" maxlength="25" formControlName="noCuenta">
+      <input matInput type="text" class="outline-0 focus:ring-0 text-center" maxlength="25" formControlName="noCuenta"
+        (ngModelChange)="onChanges()">
     </mat-form-field>
     <button mat-raised-button class="mx-3" [disabled]="form.invalid" (click)="buscar()">Buscar Cuenta</button>
+    <button mat-raised-button *ngIf="showBtn" (click)="verParcialidadesRegistradas()">Ver Parcialidades Registradas
+    </button>
   </form>
 </section>
-<div class="my-5">
-  <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData" (dataTable)="obtenerDataTabla($event)">
-  </app-mat-table>
-</div>
+<ng-container *ngIf="showTable">
+  <button mat-raised-button class="mx-3" (click)="iniciarPesaje()">Iniciar Pesaje
+  </button>
+  <button mat-raised-button (click)="finalizaPesaje()">Finaliza Pesaje</button>
+  <div class="my-5">
+    <app-mat-table [tableColumns]="tableCols" [headerText]="hText" [tableData]="tableData"
+      (dataTable)="obtenerDataTabla($event)">
+    </app-mat-table>
+  </div>
+</ng-container>

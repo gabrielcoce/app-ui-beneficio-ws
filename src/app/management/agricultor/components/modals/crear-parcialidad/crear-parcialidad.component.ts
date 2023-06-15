@@ -95,9 +95,11 @@ export class CrearParcialidadComponent implements OnInit {
       licenciaPiloto,
       placaTransporte,
     };
+    this.spinner.show();
     const data$ = this.agricultorSvc.crearParcialidadSvc(data);
     await firstValueFrom(data$)
       .then(async (consulta) => {
+        this.spinner.hide();
         if (typeof consulta === 'string') {
           //console.log(res);
           await this.showMessage('info', consulta);
@@ -105,8 +107,8 @@ export class CrearParcialidadComponent implements OnInit {
         }
         await this.showMessage('success', consulta.message);
       })
-      .catch((error) => {
-        //console.error(error);
+      .catch(() => {
+        this.spinner.hide();
       });
   }
 
@@ -141,7 +143,7 @@ export class CrearParcialidadComponent implements OnInit {
     });
     await Toast.fire({
       icon,
-      text: text.toUpperCase(),
+      text: text ? text.toUpperCase() : text,
     });
   }
 }
