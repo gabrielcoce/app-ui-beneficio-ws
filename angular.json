@@ -30,7 +30,8 @@
               "dayjs/plugin/isSameOrBefore",
               "sweetalert2",
               "qrcode",
-              "crypto-js"
+              "crypto-js",
+              "file-saver"
             ],
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],

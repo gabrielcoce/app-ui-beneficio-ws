@@ -1,14 +1,16 @@
 <mat-dialog-content>
-  <div class="bg-black text-white px-4 py-2 rounded-t-lg">
-    <h2 class="text-xl font-bold">CUENTA: {{noCuenta}}</h2>
-  </div>
-  <div class="flex justify-center">
-    <qrcode [qrdata]="url" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+  <div id="printQr">
+    <div class="bg-black text-white px-4 py-2 rounded-t-lg">
+      <h2 class="text-xl font-bold">CUENTA: {{noCuenta}}</h2>
+    </div>
+    <div class="flex justify-center qrcodeImage">
+      <qrcode #parent [qrdata]="url" [errorCorrectionLevel]="'M'" [width]="300"></qrcode>
+    </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="container text-center my-3">
-    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      (click)="accept()">Aceptar</button>
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" (click)="accept()">Guardar
+      QR</button>
   </div>
 </mat-dialog-actions>
