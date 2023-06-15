@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import CryptoJS from 'crypto-js';
-const secretKey = environment.secretKey;
+const SITE_KEY = environment.SITE_KEY;
 
 @Component({
   selector: 'app-qr-generic',
@@ -10,7 +10,7 @@ const secretKey = environment.secretKey;
   styleUrls: ['./qr-generic.component.scss'],
 })
 export class QrGenericComponent {
-  private readonly key = CryptoJS.enc.Utf8.parse(secretKey);
+  private readonly key = CryptoJS.enc.Utf8.parse(SITE_KEY);
   url: string = 'https://app-ui-beneficio-ws.vercel.app/hc/verificar-ingreso/';
   noCuenta: string = '';
   constructor(

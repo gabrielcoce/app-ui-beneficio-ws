@@ -10,7 +10,7 @@ import {
   IParcialidadesB,
   ITableParcialidadesB,
 } from 'src/app/management/interfaces/beneficio.interface';
-const secretKey = environment.secretKey;
+const SITE_KEY = environment.SITE_KEY;
 
 @Component({
   selector: 'app-approve-entry',
@@ -18,7 +18,7 @@ const secretKey = environment.secretKey;
   styleUrls: ['./approve-entry.component.scss'],
 })
 export class ApproveEntryComponent implements OnInit {
-  private readonly key = CryptoJS.enc.Utf8.parse(secretKey);
+  private readonly key = CryptoJS.enc.Utf8.parse(SITE_KEY);
   noCuenta: string = '';
   tableData!: {}[];
   hText: string[] = [
