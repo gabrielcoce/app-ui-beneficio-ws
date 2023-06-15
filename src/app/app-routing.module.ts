@@ -17,7 +17,7 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'hc/verificar-ingreso/:noCuenta',
+    path: 'hc/verificar-ingreso',
     component: ApproveEntryComponent,
     canMatch: [HcaptchaGuard],
   },

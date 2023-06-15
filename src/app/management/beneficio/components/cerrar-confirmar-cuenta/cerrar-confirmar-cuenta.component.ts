@@ -53,6 +53,7 @@ export class CerrarConfirmarCuentaComponent implements OnInit {
     );
     if (!confirmed) return;
     const noCuenta = this.transformUpper(this.form.get('noCuenta')?.value);
+    this.spinner.show();
     const consulta$ = this.beneficioSvc.putCerrarCuentaSvc(noCuenta);
     await firstValueFrom(consulta$)
       .then(async (consulta) => {
@@ -77,6 +78,7 @@ export class CerrarConfirmarCuentaComponent implements OnInit {
     );
     if (!confirmed) return;
     const noCuenta = this.transformUpper(this.form.get('noCuenta')?.value);
+    this.spinner.show();
     const consulta$ = this.beneficioSvc.putConfirmarCuentaSvc(noCuenta);
     await firstValueFrom(consulta$)
       .then(async (consulta) => {

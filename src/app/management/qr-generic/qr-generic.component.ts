@@ -11,7 +11,8 @@ const SITE_KEY = environment.SITE_KEY;
 })
 export class QrGenericComponent {
   private readonly key = CryptoJS.enc.Utf8.parse(SITE_KEY);
-  url: string = 'https://app-ui-beneficio-ws.vercel.app/hc/verificar-ingreso/';
+  url: string =
+    'https://app-ui-beneficio-ws.vercel.app/hc/verificar-ingreso?id=';
   noCuenta: string = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -20,8 +21,11 @@ export class QrGenericComponent {
 
   ngOnInit(): void {
     this.noCuenta = this.dialogRef.componentInstance.data.noCuenta;
-    this.url = this.url + this.encrypt(this.noCuenta);
-    console.log('url', this.url);
+    const parametroEncriptado = this.encrypt(this.noCuenta)
+      .replace(/\//g, '_')
+      .replace(/\+/g, '-');
+    this.url = this.url + parametroEncriptado;
+    console.log('url -->', this.url);
   }
 
   accept() {

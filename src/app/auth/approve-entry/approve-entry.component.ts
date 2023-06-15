@@ -46,12 +46,17 @@ export class ApproveEntryComponent implements OnInit {
   ) {}
   async ngOnInit(): Promise<void> {
     let encryptedAccount: string = '';
-    this.activatedRoute.params.subscribe((params: Params) => {
-      encryptedAccount = params['noCuenta'];
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      //console.log('params -->', params);
+      encryptedAccount = params['id'];
     });
-    //console.log('encryptedAccount', encryptedAccount);
-    this.noCuenta = this.decrypt(encryptedAccount);
-    //console.log('noCuenta -->', this.noCuenta);
+    const parametroEncriptado = encryptedAccount
+      .replace(/_/g, '/')
+      .replace(/-/g, '+');
+    // console.log('encryptedAccount', encryptedAccount);
+    // console.log('parametroEncriptado', parametroEncriptado);
+    this.noCuenta = this.decrypt(parametroEncriptado);
+    console.log('cuenta', this.noCuenta);
     await this.obtenerParcialidades(this.noCuenta);
   }
   private async obtenerParcialidades(cuenta: string) {
