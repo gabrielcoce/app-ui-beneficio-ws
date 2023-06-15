@@ -1,6 +1,6 @@
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
-<ng-container *ngIf="showBtn$ | async; else Loading">
   <button mat-raised-button class="mx-3" (click)="crearParcialidad()">Crear Parcialidad</button>
+<ng-container *ngIf="showBtn$ | async; else Loading">
   <button mat-raised-button (click)="verParcialidades()">Ver Parcialidades</button>
   <button mat-raised-button class="mx-3" *ngIf="showTable" (click)="generarQr()">Generar QR</button>
   <div class="my-5" *ngIf="showTable">
@@ -9,5 +9,5 @@
   </div>
 </ng-container>
 <ng-template #Loading>
-  <span class="mx-3">NO TIENE PARCIALIDADES REGISTRADAS</span>
+  <span>NO TIENE PARCIALIDADES REGISTRADAS</span>
 </ng-template>
