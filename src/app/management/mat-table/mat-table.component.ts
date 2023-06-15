@@ -20,6 +20,7 @@ import { PesoCabalService } from '../peso-cabal/peso-cabal.service';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { firstValueFrom } from 'rxjs';
 import { IAprobarRechazar } from '../interfaces/beneficio.interface';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-mat-table',
@@ -32,7 +33,8 @@ import { IAprobarRechazar } from '../interfaces/beneficio.interface';
 export class MatTableComponent implements OnChanges {
   constructor(
     private dialog: MatDialog,
-    private readonly pesoCabalSvc: PesoCabalService
+    private readonly pesoCabalSvc: PesoCabalService,
+    private spinner: NgxSpinnerService
   ) {}
   tableDataSrc: any;
   @Input('tableColumns') tableCols!: string[];
@@ -126,10 +128,12 @@ export class MatTableComponent implements OnChanges {
       `¿Desea verificar esta parcialidad ${parcialidadId}?`
     );
     if (!confirmed) return;
+    this.spinner.show();
     const verificar$ =
       this.pesoCabalSvc.putVerificarParcialidadSvc(parcialidadId);
     await firstValueFrom(verificar$)
       .then(async (consulta) => {
+        this.spinner.hide();
         if (typeof consulta === 'string') {
           //console.log(res);
           await this.showMessage('info', consulta);
@@ -145,8 +149,8 @@ export class MatTableComponent implements OnChanges {
   aprobarSolicitud(noSolicitud: string) {
     const data: IAprobarRechazar = {
       noSolicitud,
-      message: 'aprobar'
-    }
+      message: 'aprobar',
+    };
     this.dataTable.emit(data);
   }
   rechazarSolicitud(noSolicitud: string) {
