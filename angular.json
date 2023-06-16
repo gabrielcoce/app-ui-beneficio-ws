@@ -31,7 +31,9 @@
               "sweetalert2",
               "qrcode",
               "crypto-js",
-              "file-saver"
+              "file-saver",
+              "pdfmake/build/pdfmake",
+              "pdfmake/build/vfs_fonts"
             ],
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
