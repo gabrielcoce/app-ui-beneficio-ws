@@ -82,6 +82,7 @@ export class CrearParcialidadComponent implements OnInit {
   }
   cerrar() {
     this.dialogRef.close();
+    window.location.reload();
   }
   async enviar() {
     if (this.form.invalid) return;

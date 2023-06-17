@@ -25,7 +25,9 @@ export class RegistrarParcialidadComponent implements OnInit {
     private formBuilder: FormBuilder,
     private pesoCabalSvc: PesoCabalService,
     private spinner: NgxSpinnerService
-  ) {}
+  ) {
+    this.builForm();
+  }
   ngOnInit(): void {
     //throw new Error('Method not implemented.');
     this.noCuenta = this.dialogRef.componentInstance.data.noCuenta;
@@ -33,14 +35,20 @@ export class RegistrarParcialidadComponent implements OnInit {
     this.pesoIngresado = this.dialogRef.componentInstance.data.pesoIngresado;
     this.origen = this.dialogRef.componentInstance.data.origen;
     this.title = this.origen ? 'Registrar' : 'Actualizar';
-    this.builForm();
+    //this.builForm();
+    this.form.get('noCuenta')?.setValue(this.noCuenta);
+    this.form.get('noCuenta')?.disable();
+    this.form.get('parcialidadId')?.setValue(this.parcialidadId);
+    this.form.get('parcialidadId')?.disable();
+    this.form.get('pesoIngresado')?.setValue(this.pesoIngresado);
+    this.form.get('pesoIngresado')?.disable();
   }
 
   private builForm() {
     this.form = this.formBuilder.group({
-      noCuenta: [{ value: this.noCuenta, disabled: true }],
-      parcialidadId: [{ value: this.parcialidadId, disabled: true }],
-      pesoIngresado: [{ value: this.pesoIngresado, disabled: true }],
+      noCuenta: [''],
+      parcialidadId: [''],
+      pesoIngresado: [''],
       pesoRegistrado: [
         '',
         { validators: [Validators.minLength(1), Validators.required] },

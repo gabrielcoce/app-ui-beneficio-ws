@@ -74,7 +74,7 @@ export class ApproveEntryComponent implements OnInit {
         return;
       }
       if (!consulta) {
-        await this.showMessage('info', 'No. Cuenta ya fue verificada');
+        await this.showMessage('info', `No. Cuenta ya fue ingresada ${cuenta}`);
         return;
       }
     } catch (error) {

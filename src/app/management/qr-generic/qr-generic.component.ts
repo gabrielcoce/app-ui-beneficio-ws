@@ -30,7 +30,7 @@ export class QrGenericComponent implements OnInit {
       .replace(/\//g, '_')
       .replace(/\+/g, '-');
     this.url = this.url + parametroEncriptado;
-    //console.log('url -->', this.url);
+    console.log('url -->', this.url);
   }
 
   async accept() {

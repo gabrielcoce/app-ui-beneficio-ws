@@ -27,20 +27,21 @@ export class CerrarConfirmarCuentaComponent implements OnInit {
   ngOnInit(): void {
     this.origen = this.dialogRef.componentInstance.data.origen;
     this.title = this.origen ? 'Cerrar' : 'Confirmar';
-    const nocuenta = this.dialogRef.componentInstance.data.noCuenta;
-    this.form.get('noCuenta')?.setValue(nocuenta);
+    const noCuenta = this.dialogRef.componentInstance.data.noCuenta;
+    this.form.get('noCuenta')?.setValue(noCuenta);
+    this.form.get('noCuenta')?.disable();
   }
   private builForm() {
     this.form = this.formBuilder.group({
       noCuenta: [
         '',
-        {
-          validators: [
-            Validators.minLength(20),
-            Validators.maxLength(25),
-            Validators.required,
-          ],
-        },
+        // {
+        //   validators: [
+        //     Validators.minLength(20),
+        //     Validators.maxLength(25),
+        //     Validators.required,
+        //   ],
+        // },
       ],
     });
   }
